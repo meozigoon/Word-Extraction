@@ -33,6 +33,7 @@ int main()
     string line;
     bool isFirstLine = true;
 
+    long long cnt = 0;
     while (getline(inputFile, line))
     {
         if (isFirstLine)
@@ -52,6 +53,10 @@ int main()
         if (!word.empty())
         {
             wordSet.insert(word);
+            cout << cnt << '\n';
+            cnt++;
+            if (cnt >= 100000)
+				break; // 10만 개 단어만 추출
         }
     }
 
