@@ -72,7 +72,7 @@ int main()
         }
 
         string word = RemoveDigits(columns[1]);
-        if (!word.empty())
+        if (!word.empty() && columns[2] == "Έν")
         {
             words.insert(word);
         }
