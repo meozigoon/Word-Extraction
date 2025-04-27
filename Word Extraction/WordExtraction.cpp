@@ -55,7 +55,7 @@ int main()
             wordSet.insert(word);
             cout << cnt << '\n';
             cnt++;
-            if (cnt >= 100000)
+            if (cnt >= 1000)
 				break; // 10만 개 단어만 추출
         }
     }
