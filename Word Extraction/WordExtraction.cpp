@@ -1,9 +1,32 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <set>
 #include <string>
-#include <unordered_set>
 
 using namespace std;
+
+bool IsDigit(char ch)
+{
+    return ch >= '0' && ch <= '9';
+}
+
+string RemoveDigits(const string& word)
+{
+    string result;
+    for (char ch : word)
+    {
+        if (!IsDigit(ch))
+        {
+            result += ch;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return result;
+}
 
 int main()
 {
@@ -11,61 +34,56 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    string inputVecFilePath = "D:\\cc.ko.300.vec"; // fastText 한국어 벡터 파일 경로
-    string outputWordFilePath = "D:\\korean_words.txt"; // 저장할 단어 파일 경로
-
-    ifstream inputFile(inputVecFilePath);
-    ofstream outputFile(outputWordFilePath);
-
+    ifstream inputFile("D:\\study.txt");
     if (!inputFile.is_open())
     {
-        cout << "입력 파일을 열 수 없습니다.\n";
+        cerr << "입력 파일을 열 수 없습니다.\n";
         return 1;
     }
 
+    ofstream outputFile("D:\\wordList.txt");
     if (!outputFile.is_open())
     {
-        cout << "출력 파일을 열 수 없습니다.\n";
+        cerr << "출력 파일을 열 수 없습니다.\n";
         return 1;
     }
 
-    unordered_set<string> wordSet;
+    set<string> words;
     string line;
-    bool isFirstLine = true;
 
-    long long cnt = 0;
     while (getline(inputFile, line))
     {
-        if (isFirstLine)
+        if (line.empty())
         {
-            isFirstLine = false;
-            continue; // 첫 번째 줄은 단어 수와 벡터 차원 수 -> 무시
+            continue;
         }
 
-        size_t firstSpacePos = line.find(' ');
-        if (firstSpacePos == string::npos)
+        stringstream ss(line);
+        string columns[5];
+        int i = 0;
+        while (getline(ss, columns[i], '\t') && i < 5)
         {
-            continue; // 잘못된 라인 -> 무시
+            i++;
         }
 
-        string word = line.substr(0, firstSpacePos);
+        if (i < 2)
+        {
+            continue;
+        }
 
+        string word = RemoveDigits(columns[1]);
         if (!word.empty())
         {
-            wordSet.insert(word);
-            cout << cnt << '\n';
-            cnt++;
-            if (cnt >= 1000)
-				break; // 10만 개 단어만 추출
+            words.insert(word);
         }
     }
 
-    for (const auto& word : wordSet)
+    for (const string& word : words)
     {
         outputFile << word << '\n';
     }
 
-    cout << "총 " << wordSet.size() << "개의 단어를 추출하여 저장했습니다.\n";
+	cout << "finished\n";
 
     inputFile.close();
     outputFile.close();
