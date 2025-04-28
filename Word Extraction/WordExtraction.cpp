@@ -34,14 +34,14 @@ int main()
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    ifstream inputFile("D:\\study.txt");
+    ifstream inputFile("D:\\Machine Learning\\study.txt");
     if (!inputFile.is_open())
     {
         cerr << "입력 파일을 열 수 없습니다.\n";
         return 1;
     }
 
-    ofstream outputFile("D:\\wordList.txt");
+    ofstream outputFile("D:\\Machine Learning\\wordList.txt");
     if (!outputFile.is_open())
     {
         cerr << "출력 파일을 열 수 없습니다.\n";
